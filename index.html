@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar de Licitações</title>
+<style>
+  :root{--primary:#1e3a8a;--primary-hover:#1d4ed8;--accent:#f59e0b;--bg:#f1f5f9;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--success:#16a34a;--info:#0284c7}
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  body{background:var(--bg);color:var(--text);line-height:1.5}
+  header{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;padding:1.25rem 2rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem}
+  header h1{font-size:1.3rem}
+  header p{font-size:.85rem;color:#cbd5e1}
+  .sync{font-size:.78rem;background:rgba(255,255,255,.12);padding:.25rem .65rem;border-radius:999px;display:inline-block;margin-top:.35rem;color:#fde68a}
+  .actions{display:flex;gap:.6rem;flex-wrap:wrap}
+  .btn{padding:.55rem 1rem;border-radius:6px;border:none;font-size:.875rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+  .btn-primary{background:var(--accent);color:#0f172a}
+  .btn-outline{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  .btn-secondary{background:#e2e8f0;color:#1e293b}
+  .container{max-width:1400px;margin:1.5rem auto;padding:0 1.5rem}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.25rem}
+  .kpi{background:var(--card);padding:1.1rem;border-radius:10px;border:1px solid var(--border)}
+  .kpi b{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  .kpi span{display:block;font-size:1.55rem;font-weight:700;margin-top:.2rem}
+  .filters{background:var(--card);padding:1.1rem;border-radius:10px;border:1px solid var(--border);margin-bottom:1.25rem;display:grid;grid-template-columns:2fr repeat(5,1fr) auto;gap:.8rem;align-items:end}
+  @media(max-width:1200px){.filters{grid-template-columns:1fr 1fr 1fr}}
+  @media(max-width:640px){.filters{grid-template-columns:1fr}}
+  .fg label{display:block;font-size:.76rem;font-weight:600;color:var(--muted);margin-bottom:.25rem}
+  .fg input,.fg select{width:100%;padding:.5rem .7rem;border:1px solid var(--border);border-radius:6px;font-size:.88rem;background:#fff;color:var(--text)}
+  .check{display:flex;align-items:center;gap:.4rem;font-size:.85rem;padding-bottom:.5rem;white-space:nowrap}
+  .check input{width:auto}
+  .table-card{background:var(--card);border-radius:10px;border:1px solid var(--border);overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:1000px}
+  th{background:#f8fafc;text-align:left;padding:.8rem 1rem;font-size:.75rem;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+  td{padding:.9rem 1rem;border-bottom:1px solid var(--border);font-size:.88rem;vertical-align:top}
+  tr:hover td{background:#f8fafc}
+  .tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.75rem;font-weight:700}
+  .tag-uf{background:#e0e7ff;color:#1e3a8a}
+  .tag-mod{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;font-weight:600}
+  .tag-cat{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;border-radius:999px;margin-top:.3rem}
+  .tag-urg{background:#fee2e2;color:#991b1b;margin-top:.25rem}
+  .tag-enc{background:#e5e7eb;color:#374151;margin-top:.25rem}
+  .orgao{font-weight:700;margin:.2rem 0}
+  .muted{color:var(--muted);font-size:.8rem}
+  .objeto{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-width:440px;color:#334155}
+  .valor{font-weight:700;white-space:nowrap}
+  .status{padding:.35rem .5rem;border-radius:6px;font-size:.8rem;font-weight:600;border:1px solid var(--border);cursor:pointer}
+  .s-Nova{background:#dbeafe;color:#1e40af}.s-Analise{background:#fef3c7;color:#92400e}.s-Orcando{background:#dcfce7;color:#166534}.s-Descartada{background:#fee2e2;color:#991b1b}
+  .row-actions{display:flex;gap:.4rem;white-space:nowrap}
+  .btn-sm{padding:.35rem .65rem;font-size:.78rem;border-radius:5px;text-decoration:none;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text)}
+  .btn-link{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+  .more{text-align:center;padding:1rem}
+  .modal{position:fixed;inset:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;padding:1rem;z-index:50}
+  .modal.on{display:flex}
+  .modal-box{background:#fff;border-radius:12px;max-width:680px;width:100%;padding:1.5rem;max-height:90vh;overflow-y:auto}
+  .modal-head{display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:.8rem;margin-bottom:1rem}
+  .x{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted)}
+  .dl{font-size:.75rem;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .dv{margin:.15rem 0 .85rem}
+  .objeto-full{background:#f8fafc;padding:.75rem;border-radius:6px;border:1px solid var(--border);white-space:pre-wrap}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>🏗️ Radar de Licitações</h1>
+    <p>Licitações abertas do PNCP em todo o Brasil, atualizadas automaticamente</p>
+    <span class="sync" id="sync">Carregando…</span>
+  </div>
+  <div class="actions">
+    <input type="file" id="arquivo" accept=".json" hidden />
+    <button class="btn btn-primary" id="btnImportar">📥 Importar JSON</button>
+    <button class="btn btn-outline" id="btnCsv">📊 Exportar CSV</button>
+    <button class="btn btn-outline" id="btnAtualizar">🔄 Recarregar</button>
+  </div>
+</header>
+
+<main class="container">
+  <section class="kpis">
+    <div class="kpi"><b>Licitações no filtro</b><span id="kTotal">0</span></div>
+    <div class="kpi"><b>Volume estimado</b><span id="kValor">R$ 0,00</span></div>
+    <div class="kpi"><b>Novas (sem triagem)</b><span id="kNovas" style="color:var(--info)">0</span></div>
+    <div class="kpi"><b>Em orçamento</b><span id="kOrc" style="color:var(--success)">0</span></div>
+    <div class="kpi"><b>Encerram em 7 dias</b><span id="kUrg" style="color:#b91c1c">0</span></div>
+  </section>
+
+  <section class="filters">
+    <div class="fg"><label for="fBusca">Palavra-chave, objeto, órgão ou município</label><input id="fBusca" type="search" placeholder="Ex: pavimentação, escola, drenagem…" /></div>
+    <div class="fg"><label for="fUF">Estado</label><select id="fUF"><option value="">Todo o Brasil</option></select></div>
+    <div class="fg"><label for="fCat">Tipo de obra</label><select id="fCat"><option value="">Todas</option></select></div>
+    <div class="fg"><label for="fValor">Valor mínimo</label>
+      <select id="fValor"><option value="0">Qualquer</option><option value="100000">&gt; R$ 100 mil</option><option value="500000">&gt; R$ 500 mil</option><option value="1000000">&gt; R$ 1 milhão</option><option value="5000000">&gt; R$ 5 milhões</option></select></div>
+    <div class="fg"><label for="fStatus">Status no funil</label>
+      <select id="fStatus"><option value="">Todos</option><option value="Nova">Nova</option><option value="Analise">Em análise</option><option value="Orcando">Orçando</option><option value="Descartada">Descartada</option></select></div>
+    <div class="fg"><label for="fOrdem">Ordenar por</label>
+      <select id="fOrdem"><option value="enc">Encerramento (mais próximo)</option><option value="pub">Publicação (mais recente)</option><option value="val">Maior valor</option></select></div>
+    <div>
+      <label class="check"><input type="checkbox" id="fAbertas" checked /> Só abertas</label>
+      <label class="check"><input type="checkbox" id="fEsconder" checked /> Ocultar descartadas</label>
+      <button class="btn btn-secondary" id="btnLimpar" style="width:100%">Limpar</button>
+    </div>
+  </section>
+
+  <section class="table-card">
+    <table>
+      <thead><tr><th>Local / Órgão</th><th>Objeto</th><th>Valor estimado</th><th>Propostas até</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="corpo"></tbody>
+    </table>
+    <div id="vazio" class="empty" hidden>Nenhuma licitação encontrada com esses filtros.</div>
+    <div id="mais" class="more" hidden><button class="btn btn-secondary" id="btnMais">Mostrar mais</button></div>
+  </section>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <span class="tag tag-uf" id="mUF"></span> <span class="tag tag-mod" id="mMod"></span> <span class="tag tag-cat" id="mCat"></span>
+        <h3 id="mOrgao" style="margin-top:.5rem"></h3>
+        <p class="muted" id="mMun"></p>
+      </div>
+      <button class="x" id="btnFechar" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="dl">Número de controle</div><div class="dv" id="mId"></div>
+    <div class="dl">Objeto completo</div><div class="dv objeto-full" id="mObjeto"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div><div class="dl">Valor estimado</div><div class="dv" id="mValor" style="font-weight:700;color:var(--primary)"></div></div>
+      <div><div class="dl">Situação</div><div class="dv" id="mSit"></div></div>
+      <div><div class="dl">Início das propostas</div><div class="dv" id="mIni"></div></div>
+      <div><div class="dl">Fim das propostas</div><div class="dv" id="mFim"></div></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:.6rem;flex-wrap:wrap">
+      <a class="btn btn-secondary" id="mOrigem" target="_blank" rel="noopener noreferrer" hidden>Sistema de origem ↗</a>
+      <a class="btn btn-primary" id="mLink" target="_blank" rel="noopener noreferrer">Abrir no PNCP ↗</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const CHAVE_STATUS = "radar_status_v3";
+  const PAGINA = 100;
+  const UFS = "AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" ");
+  const CATS = ["Pavimentação", "Saneamento", "Infraestrutura/OAE", "Edificações", "Outros"];
+  const $ = id => document.getElementById(id);
+
+  let todas = [];
+  let filtradas = [];
+  let visiveis = PAGINA;
+  let statusMap = lerStatus();
+
+  function lerStatus() { try { return JSON.parse(localStorage.getItem(CHAVE_STATUS)) || {}; } catch { return {}; } }
+  function salvarStatus() { try { localStorage.setItem(CHAVE_STATUS, JSON.stringify(statusMap)); } catch {} }
+  const statusDe = it => statusMap[it.id] || "Nova";
+
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function urlSegura(u) { return /^https?:\/\//i.test(u || "") ? u : ""; }
+  function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function moeda(v) { return Number(v) > 0 ? Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "Sigiloso / N/I"; }
+  function data(s) {
+    if (!s) return "Não informada";
+    const d = new Date(s);
+    return isNaN(d) ? s : d.toLocaleDateString("pt-BR") + " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  }
+  function ts(s) { const t = new Date(s).getTime(); return isNaN(t) ? null : t; }
+  function diasAte(s) { const t = ts(s); return t === null ? null : (t - Date.now()) / 86400000; }
+
+  function preencherSelects() {
+    $("fUF").insertAdjacentHTML("beforeend", UFS.map(u => `<option value="${u}">${u}</option>`).join(""));
+    $("fCat").insertAdjacentHTML("beforeend", CATS.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join(""));
+  }
+
+  async function carregar() {
+    $("sync").textContent = "Carregando…";
+    try {
+      const r = await fetch("licitacoes.json?v=" + Date.now());
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const j = await r.json();
+      const lista = Array.isArray(j) ? j : (j.licitacoes || []);
+      todas = lista.filter(x => x && x.id);
+      const quando = !Array.isArray(j) && j.atualizado_em ? new Date(j.atualizado_em).toLocaleString("pt-BR") : "data desconhecida";
+      let msg = `✅ ${todas.length} licitações • atualizado em ${quando}`;
+      if (!Array.isArray(j) && j.ufs_com_falha && j.ufs_com_falha.length) msg += ` • ⚠️ falha em: ${j.ufs_com_falha.join(", ")}`;
+      $("sync").textContent = msg;
+    } catch (e) {
+      todas = [];
+      $("sync").textContent = "ℹ️ licitacoes.json não encontrado — rode o coletor ou use Importar JSON";
+    }
+    filtrar();
+  }
+
+  function filtrar() {
+    const busca = norm($("fBusca").value.trim());
+    const uf = $("fUF").value, cat = $("fCat").value, st = $("fStatus").value;
+    const vmin = Number($("fValor").value) || 0;
+    const soAbertas = $("fAbertas").checked, esconder = $("fEsconder").checked;
+    const agora = Date.now();
+
+    filtradas = todas.filter(it => {
+      if (uf && it.uf !== uf) return false;
+      if (cat && it.categoria !== cat) return false;
+      if (vmin && (Number(it.valor_estimado) || 0) < vmin) return false;
+      const s = statusDe(it);
+      if (st && s !== st) return false;
+      if (!st && esconder && s === "Descartada") return false;
+      if (soAbertas) { const fim = ts(it.data_encerramento); if (fim !== null && fim < agora) return false; }
+      if (busca && !norm(`${it.objeto} ${it.orgao} ${it.municipio}`).includes(busca)) return false;
+      return true;
+    });
+
+    const ordem = $("fOrdem").value;
+    filtradas.sort((a, b) => {
+      if (ordem === "val") return (Number(b.valor_estimado) || 0) - (Number(a.valor_estimado) || 0);
+      if (ordem === "pub") return (ts(b.data_publicacao) || 0) - (ts(a.data_publicacao) || 0);
+      return (ts(a.data_encerramento) ?? Infinity) - (ts(b.data_encerramento) ?? Infinity);
+    });
+
+    visiveis = PAGINA;
+    kpis();
+    tabela();
+  }
+
+  function kpis() {
+    $("kTotal").textContent = filtradas.length.toLocaleString("pt-BR");
+    $("kValor").textContent = moeda(filtradas.reduce((a, i) => a + (Number(i.valor_estimado) || 0), 0));
+    $("kNovas").textContent = filtradas.filter(i => statusDe(i) === "Nova").length;
+    $("kOrc").textContent = filtradas.filter(i => statusDe(i) === "Orcando").length;
+    $("kUrg").textContent = filtradas.filter(i => { const d = diasAte(i.data_encerramento); return d !== null && d >= 0 && d <= 7; }).length;
+  }
+
+  function tabela() {
+    const corpo = $("corpo");
+    $("vazio").hidden = filtradas.length > 0;
+    $("mais").hidden = filtradas.length <= visiveis;
+    corpo.innerHTML = filtradas.slice(0, visiveis).map(it => {
+      const d = diasAte(it.data_encerramento);
+      const aviso = d === null ? "" : d < 0 ? '<div><span class="tag tag-enc">Encerrada</span></div>'
+        : d <= 3 ? '<div><span class="tag tag-urg">⚠️ Encerra em breve</span></div>' : "";
+      const s = statusDe(it);
+      const link = urlSegura(it.link);
+      return `<tr data-id="${esc(it.id)}">
+        <td>
+          <span class="tag tag-uf">${esc(it.uf || "BR")}</span> <span class="tag tag-mod">${esc(it.modalidade || it.fonte || "PNCP")}</span>
+          <span class="muted">${esc(it.municipio)}</span>
+          <div class="orgao">${esc(it.orgao || "Órgão não informado")}</div>
+          <span class="tag tag-cat">${esc(it.categoria || "Outros")}</span>
+        </td>
+        <td><div class="objeto" title="${esc(it.objeto)}">${esc(it.objeto || "-")}</div></td>
+        <td class="valor">${esc(moeda(it.valor_estimado))}</td>
+        <td class="muted" style="white-space:nowrap"><div>${esc(data(it.data_encerramento))}</div>${aviso}</td>
+        <td><select class="status s-${esc(s)}" data-acao="status">
+          <option value="Nova"${s === "Nova" ? " selected" : ""}>🔵 Nova</option>
+          <option value="Analise"${s === "Analise" ? " selected" : ""}>🟡 Em análise</option>
+          <option value="Orcando"${s === "Orcando" ? " selected" : ""}>🟢 Orçando</option>
+          <option value="Descartada"${s === "Descartada" ? " selected" : ""}>🔴 Descartada</option>
+        </select></td>
+        <td><div class="row-actions">
+          <button class="btn-sm" data-acao="detalhes">Detalhes</button>
+          ${link ? `<a class="btn-sm btn-link" href="${esc(link)}" target="_blank" rel="noopener noreferrer">Edital ↗</a>` : ""}
+        </div></td>
+      </tr>`;
+    }).join("");
+  }
+
+  function abrirModal(id) {
+    const it = todas.find(x => x.id === id);
+    if (!it) return;
+    $("mUF").textContent = it.uf || "BR";
+    $("mMod").textContent = it.modalidade || it.fonte || "PNCP";
+    $("mCat").textContent = it.categoria || "Outros";
+    $("mOrgao").textContent = it.orgao || "";
+    $("mMun").textContent = it.municipio || "";
+    $("mId").textContent = it.id;
+    $("mObjeto").textContent = it.objeto || "";
+    $("mValor").textContent = moeda(it.valor_estimado);
+    $("mSit").textContent = it.situacao || "—";
+    $("mIni").textContent = data(it.data_abertura);
+    $("mFim").textContent = data(it.data_encerramento);
+    const l = urlSegura(it.link), o = urlSegura(it.link_origem);
+    $("mLink").href = l || "#"; $("mLink").hidden = !l;
+    $("mOrigem").href = o || "#"; $("mOrigem").hidden = !o;
+    $("modal").classList.add("on");
+  }
+  const fechar = () => $("modal").classList.remove("on");
+
+  function celulaCsv(v) {
+    let s = String(v ?? "");
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; // evita fórmulas no Excel
+    return `"${s.replace(/"/g, '""')}"`;
+  }
+  function exportarCsv() {
+    if (!filtradas.length) { alert("Não há licitações no filtro para exportar."); return; }
+    const cab = ["ID", "UF", "Municipio", "Orgao", "Modalidade", "Categoria", "Objeto", "Valor_Estimado", "Publicacao", "Encerramento_Propostas", "Status", "Link"];
+    const linhas = filtradas.map(i => [i.id, i.uf, i.municipio, i.orgao, i.modalidade, i.categoria, i.objeto,
+      Number(i.valor_estimado) || 0, i.data_publicacao, i.data_encerramento, statusDe(i), i.link].map(celulaCsv).join(";"));
+    const blob = new Blob(["﻿" + [cab.join(";"), ...linhas].join("\n")], { type: "text/csv;charset=utf-8;" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `licitacoes_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  // ---- eventos ----
+  ["fBusca", "fUF", "fCat", "fValor", "fStatus", "fOrdem", "fAbertas", "fEsconder"].forEach(id =>
+    $(id).addEventListener(id === "fBusca" ? "input" : "change", filtrar));
+  $("btnLimpar").addEventListener("click", () => {
+    $("fBusca").value = ""; $("fUF").value = ""; $("fCat").value = ""; $("fValor").value = "0";
+    $("fStatus").value = ""; $("fOrdem").value = "enc"; $("fAbertas").checked = true; $("fEsconder").checked = true;
+    filtrar();
+  });
+  $("btnMais").addEventListener("click", () => { visiveis += PAGINA; tabela(); });
+  $("btnCsv").addEventListener("click", exportarCsv);
+  $("btnAtualizar").addEventListener("click", carregar);
+  $("btnImportar").addEventListener("click", () => $("arquivo").click());
+  $("btnFechar").addEventListener("click", fechar);
+  $("modal").addEventListener("click", e => { if (e.target.id === "modal") fechar(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
+
+  $("corpo").addEventListener("click", e => {
+    const btn = e.target.closest("[data-acao='detalhes']");
+    if (btn) abrirModal(btn.closest("tr").dataset.id);
+  });
+  $("corpo").addEventListener("change", e => {
+    if (e.target.dataset.acao !== "status") return;
+    statusMap[e.target.closest("tr").dataset.id] = e.target.value;
+    salvarStatus();
+    filtrar();
+  });
+
+  $("arquivo").addEventListener("change", e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const leitor = new FileReader();
+    leitor.onload = () => {
+      try {
+        const j = JSON.parse(leitor.result);
+        const lista = Array.isArray(j) ? j : j.licitacoes;
+        if (!Array.isArray(lista)) throw new Error();
+        const ids = new Set(todas.map(x => x.id));
+        let novos = 0;
+        lista.forEach(it => { if (it && it.id && !ids.has(it.id)) { todas.push(it); ids.add(it.id); novos++; } });
+        $("sync").textContent = `✅ ${todas.length} licitações (importação manual)`;
+        filtrar();
+        alert(`Importação concluída: ${novos} novas licitações.`);
+      } catch { alert("Arquivo JSON inválido."); }
+      e.target.value = "";
+    };
+    leitor.readAsText(f);
+  });
+
+  preencherSelects();
+  carregar();
+})();
+</script>
+</body>
+</html>
