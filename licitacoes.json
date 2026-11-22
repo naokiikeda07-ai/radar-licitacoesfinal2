@@ -1,7 +1,7 @@
 {
- "atualizado_em": "2026-11-22T12:36:56-03:00",
+ "atualizado_em": "2026-11-22T18:33:42-03:00",
  "filtro": "engenharia",
- "total_na_api": 27037,
+ "total_na_api": 27047,
  "ufs_com_falha": [],
  "licitacoes": [
   {
@@ -22001,6 +22001,23 @@
    "situacao": "Divulgada no PNCP",
    "link": "https://pncp.gov.br/app/editais/00394502000144/2026/17107",
    "link_origem": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/acompanhamento-compra?compra=78300006001392026"
+  },
+  {
+   "id": "00394502000144-1-017132/2026",
+   "fonte": "PNCP",
+   "modalidade": "Dispensa",
+   "orgao": "COMANDO DA MARINHA",
+   "uf": "RJ",
+   "municipio": "Duque de Caxias",
+   "categoria": "Outros",
+   "objeto": "Aquisição de materiais de consumo destinados ao atendimento das necessidades administrativas, de comunicação social e de manutenção e conservação das instalações do Batalhão de Engenharia de Fuzileiros Navais.",
+   "valor_estimado": 13081.05,
+   "data_publicacao": "2026-11-22T16:42:48",
+   "data_abertura": "2026-11-23T08:00:00",
+   "data_encerramento": "2026-11-26T08:00:00",
+   "situacao": "Divulgada no PNCP",
+   "link": "https://pncp.gov.br/app/editais/00394502000144/2026/17132",
+   "link_origem": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/acompanhamento-compra?compra=79531006000582026"
   },
   {
    "id": "00489828000155-1-000746/2026",
