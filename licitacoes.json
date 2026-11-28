@@ -1,7 +1,7 @@
 {
- "atualizado_em": "2026-11-28T07:42:58-03:00",
+ "atualizado_em": "2026-11-28T12:37:36-03:00",
  "filtro": "engenharia",
- "total_na_api": 26162,
+ "total_na_api": 26166,
  "ufs_com_falha": [],
  "licitacoes": [
   {
@@ -66813,6 +66813,40 @@
    "situacao": "Divulgada no PNCP",
    "link": "https://pncp.gov.br/app/editais/19904298000192/2026/11",
    "link_origem": "https://app2-compras.conagreste.al.gov.br/pesquisa/120277"
+  },
+  {
+   "id": "59851600000106-1-000128/2026",
+   "fonte": "PNCP",
+   "modalidade": "Concorrência - Eletrônica",
+   "orgao": "MUNICIPIO DE SAO JOSE DA BELA VISTA",
+   "uf": "SP",
+   "municipio": "São José da Bela Vista",
+   "categoria": "Outros",
+   "objeto": "[Portal de Compras Públicas] - CONTRATAÇÃO EMPRESA ESPECIALIZADA EM SERVIÇOS DE ENGENHARIA PARA CONSTRUÇÃO DE REDES ERAMAIS DE ÁGUA NO SETOR 1  SÃO JOSÉ DA BELA VISTA/SP.",
+   "valor_estimado": 4849857.4,
+   "data_publicacao": "2026-11-28T13:02:52",
+   "data_abertura": "2026-11-30T00:01:00",
+   "data_encerramento": "2026-12-14T09:30:00",
+   "situacao": "Divulgada no PNCP",
+   "link": "https://pncp.gov.br/app/editais/59851600000106/2026/128",
+   "link_origem": "https://www.portaldecompraspublicas.com.br/processos/SP/Prefeitura-Municipal-de-Sao-Jose-da-Bela-Vista-4768/CPMP-7-2026-2026-528711"
+  },
+  {
+   "id": "59851600000106-1-000130/2026",
+   "fonte": "PNCP",
+   "modalidade": "Pregão - Eletrônico",
+   "orgao": "MUNICIPIO DE SAO JOSE DA BELA VISTA",
+   "uf": "SP",
+   "municipio": "São José da Bela Vista",
+   "categoria": "Outros",
+   "objeto": "[Portal de Compras Públicas] - O objeto deste é o Registro de Preços para a aquisição de materiais de limpeza e conservação, sob demanda, para atender às necessidades de higienização e manutenção das dependências  das Secretarias municipais (Educação, Saúde, Desenvolvimento Social, Administração e Obras) jurisdicionadas a Prefeitura Municipal de São José da Bela Vista/SP, conforme as especificações, quantidades e condições estabelecidas neste instrumento,  para o período de 12 (doze) meses, com as respectivas quantidades e valores descritos no Termo de Referência.",
+   "valor_estimado": 1166332.14,
+   "data_publicacao": "2026-11-28T13:09:49",
+   "data_abertura": "2026-11-30T12:57:00",
+   "data_encerramento": "2026-12-14T09:30:00",
+   "situacao": "Divulgada no PNCP",
+   "link": "https://pncp.gov.br/app/editais/59851600000106/2026/130",
+   "link_origem": "https://www.portaldecompraspublicas.com.br/processos/SP/Prefeitura-Municipal-de-Sao-Jose-da-Bela-Vista-4768/RPE-18-2026-2026-528713"
   },
   {
    "id": "68596162000178-1-000552/2026",
